@@ -4,7 +4,6 @@
   "version": "dev-master",
   "type": "yii2-extension",
   "keywords": ["endomondo", "yii2"],
-  "minimum-stability": "dev",
   "license": "MIT",
   "authors": [
     {
