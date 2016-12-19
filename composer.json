@@ -20,6 +20,6 @@
     "ramsey/uuid": "~2.8.2"
   },
   "autoload": {
-    "psr-0": { "mitrm\\endomondo\\": "" }
+    "psr-0": { "mitrm\\endomondo\\": "src/" }
   }
 }
