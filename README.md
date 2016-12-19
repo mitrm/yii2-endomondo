@@ -10,7 +10,6 @@ $endomondo = new \Fabulator\Endomondo\Endomondo();
 $endomondo->login(USER_EMAIL, USER_PASSWORD);
 var_dump($endomondo->getUserInfo());
 ```
-
 # Get information about existed workouts
 You can even export gpx files.
 ```
