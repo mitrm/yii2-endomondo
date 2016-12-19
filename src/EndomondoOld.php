@@ -1,6 +1,6 @@
 <?php
 
-namespace Fabulator\Endomondo;
+namespace mitrm\endomondo;
 
 use Rhumsaa\Uuid\Uuid;
 use Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException;

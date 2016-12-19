@@ -1,6 +1,6 @@
 <?php
 
-namespace Fabulator\Endomondo;
+namespace mitrm\endomondo;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\SetCookie;
