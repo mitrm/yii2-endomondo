@@ -1,0 +1,25 @@
+{
+  "name": "mitrm/yii2-endomondo",
+  "description": "Simple Endomondo Api Class for Yii2",
+  "version": "dev-master",
+  "type": "yii2-extension",
+  "keywords": ["endomondo", "yii2"],
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ruslan Mitskevich",
+      "email": "mitrm.ru@gmail.com",
+      "role": "Developer"
+
+    }
+  ],
+  "require": {
+    "PHP" : ">=5.4",
+    "guzzlehttp/guzzle": "~6.0",
+    "ramsey/uuid": "~2.8.2"
+  },
+  "autoload": {
+    "psr-0": { "mitrm\\endomondo\\": "" }
+  }
+}
