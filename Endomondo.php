@@ -3,6 +3,7 @@
 namespace mitrm\endomondo;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\SessionCookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 
 class Endomondo
@@ -60,6 +61,14 @@ class Endomondo
     const SPORT_STEP_COUNTER = 50;
     const SPORT_CIRKUIT_TRAINING = 87;
 
+
+    /**
+     * Fitbit URL.
+     *
+     * @const string
+     */
+    const BASE_URL = 'https://www.endomondo.com';
+
     /**
      * Namespace for workouts REST API.
      *
@@ -91,21 +100,21 @@ class Endomondo
     /**
      * Old Endomondo API
      * Only with old API you can create workouts.
-     * 
+     *
      * @var EndomondoOld
      */
     private $oldApi;
 
     /**
      * User email
-     * 
+     *
      * @var string
      */
     private $email;
 
     /**
      * User password
-     * 
+     *
      * @var string
      */
     private $password;
@@ -115,9 +124,7 @@ class Endomondo
      */
     public function __construct()
     {
-        $this->httpclient = new Client([
-            'base_url' => 'https://www.endomondo.com/'
-            ]);
+        $this->httpclient = new Client();
         $this->workouts = new Workouts($this);
     }
 
@@ -130,7 +137,7 @@ class Endomondo
      */
     public function get($endpoint, $data = [])
     {
-        return $this->request('GET', 'rest/v1/users/' . $this->userId . '/' . $endpoint . '?' . http_build_query($data));
+        return $this->request('GET', self::BASE_URL.'/rest/v1/users/' . $this->userId . '/' . $endpoint . '?' . http_build_query($data));
     }
 
     /**
@@ -145,7 +152,7 @@ class Endomondo
         // regenerate CSFR token, need when you updating data
         $this->generateCSRFToken();
 
-        return $this->request('PUT', 'rest/v1/users/' . $this->userId . '/' . $endpoint, $data);
+        return $this->request('PUT', self::BASE_URL.'/rest/v1/users/' . $this->userId . '/' . $endpoint, $data);
     }
 
     public function post($endpoint, $data)
@@ -153,7 +160,7 @@ class Endomondo
         // regenerate CSFR token, need when you updating data
         $this->generateCSRFToken();
 
-        return $this->request('POST', 'rest/v1/users/' . $this->userId . '/' . $endpoint, $data);
+        return $this->request('POST', self::BASE_URL.'/rest/v1/users/' . $this->userId . '/' . $endpoint, $data);
     }
 
     /**
@@ -166,7 +173,7 @@ class Endomondo
     {
         $this->generateCSRFToken();
 
-        return $this->request('DELETE', 'rest/v1/users/' . $this->userId . '/' . $endpoint);
+        return $this->request('DELETE', self::BASE_URL.'/rest/v1/users/' . $this->userId . '/' . $endpoint);
     }
 
     /**
@@ -189,7 +196,7 @@ class Endomondo
         // set auth data and post data
         $options = [
             'body' => $method === 'post' || $method === 'put' ? json_encode($data) : null,
-            'cookies' => true,
+            'cookies' => new SessionCookieJar(true),
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Cookie' => 'CSRF_TOKEN=' . $this->csrf . '',
@@ -197,7 +204,6 @@ class Endomondo
             ]
         ];
         if($method == 'get') {
-
         }
 
         return $this->httpclient->$method($endpoint, $options);
@@ -232,13 +238,12 @@ class Endomondo
     {
         $this->email = $email;
         $this->password = $password;
-        $response = $this->request('POST', 'rest/session', [
+        $response = $this->request('POST', self::BASE_URL.'/rest/session', [
             'email' => $this->email,
             'password' => $this->password,
             'remember' => true
         ]);
         $this->userId = $response->id;
-
         return $response;
     }
 
@@ -249,14 +254,14 @@ class Endomondo
      */
     public function getUserInfo()
     {
-        return $this->request('GET', 'rest/session');
+        return $this->request('GET', self::BASE_URL.'/rest/session');
     }
 
     /**
      * Get old API that can do some more things than the new
      * eg. update weight, create workout
      */
-    public function getOldAPI() 
+    public function getOldAPI()
     {
         // was old api already prepared? use it
         if ($this->oldApi) {
