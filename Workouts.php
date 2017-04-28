@@ -75,7 +75,7 @@ class Workouts
     public function getLast($limit = 15)
     {
         return $this->filter([
-            'limit' => 15,
+            'limit' => $limit,
         ]);
     }
 
